@@ -1,0 +1,201 @@
+--// Save \\--
+-- Main V0.5
+local Name = "Hub358x3UniVersal.confg"
+local DefaultSettings = {
+Speed = 16;
+JumpPowerV = 50;
+InfJumper = false;
+}
+-- Main V1
+local Settings
+if not pcall(function() readfile(Name) end) then writefile(Name, game:service'HttpService':JSONEncode(DefaultSettings)) end
+Settings = game:service'HttpService':JSONDecode(readfile(Name))
+-- Main V2
+local function Save()
+writefile(Name,game:service'HttpService':JSONEncode(Settings))
+end
+
+-------------------------------------------------------------------------------------
+--// Player \\--
+local ppl = game:GetService("Players")["LocalPlayer"]
+
+--// Main \\--
+local Notification = loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisBetterNotifications.lua"))()
+local VLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/vep1032/VepStuff/main/VL"))()
+local s = VLib:Window("358x3 Hub", "Universal", "Uni")
+local ss = s:Tab("Local Player")
+local sf = s:Tab("Player Informations")
+local sg = s:Tab("Admin Commands")
+local sd = s:Tab("Tips/Tricks")
+local se = s:Tab("Gui Data")
+local sL = s:Tab("Other Good Hubs")
+local sER = s:Tab("Other Scripts")
+
+--// Tables \\--
+local PlayerX = {
+    Speed = 16;
+    JumpPowerVX = 50;
+    InfJumper = false;
+}
+--// Local Player \\--
+ss:Slider("Speed",0,200,(Settings.Speed),function(t)
+    PlayerX.Speed = t
+    local gmt = getrawmetatable(game)
+    setreadonly(gmt, false)
+    local oldindex = gmt.__index
+    gmt.__index = newcclosure(function(self,b)
+    if b == "WalkSpeed" then
+    return 16
+    end
+    return oldindex(self,b)
+    end)
+    Settings.Speed = t
+    Save()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Settings.Speed
+end)
+
+ss:Slider("Jump Power!",0,500,(Settings.JumpPowerV),function(t)
+    PlayerX.JumpPowerVX = t
+    local gmt = getrawmetatable(game)
+    setreadonly(gmt, false)
+    local oldindex = gmt.__index
+    gmt.__index = newcclosure(function(self,b)
+    if b == "JumpPower" then
+    return 50
+    end
+    return oldindex(self,b)
+    end)
+    Settings.JumpPowerV = t
+    Save()
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = Settings.JumpPowerV
+end)
+
+ss:Button("Universal Esp ( not by me )",function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/imanuwusaur/Universal-ESP/main/%3B).lua"))()
+end)
+
+ss:Button("Universal aimbot [ Y to activate ] ( not by me )",function()
+getgenv().AimPart = "Head" -- For R15 Games: {UpperTorso, LowerTorso, HumanoidRootPart, Head} | For R6 Games: {Head, Torso, HumanoidRootPart}
+getgenv().AimlockToggleKey = "Y" -- Toggles Aimbot On/Off
+getgenv().AimRadius = 30 -- How far away from someones character you want to lock on at
+getgenv().ThirdPerson = false -- Locking onto someone in your Third Person POV
+getgenv().FirstPerson = true -- Locking onto someone in your First Person POV
+getgenv().WallCheck = true -- Check if Target is behind a wall
+getgenv().TeamCheck = true -- Check if Target is on your Team (True means it wont lock onto your teamates, false is vice versa) (Set it to false if there are no teams)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zxciaz/Universal-Scripts/main/Aimbot", true))()
+end)
+
+
+ss:Button("HitBox v1 (not by me)",function()
+    loadstring(game:HttpGet("https://pastebin.com/vUvg0Em4", true))()
+end)
+
+
+ss:Button("HitBox v2 (not by me)",function()
+    loadstring(game:HttpGet("http://gameovers.net/Scripts/Free/HitboxExpander/main.lua", true))()
+end)
+
+
+ss:Slider("HipHeight",0,500,5,function(t)
+    game.Players.LocalPlayer.Character.Humanoid.HipHeight = t
+end)
+
+ss:Toggle("Infinity Jump",function(t)
+    Settings.InfJumper = t
+    Save()
+    if t then
+        InfJumperDDD();
+    end
+end)
+
+ss:Toggle("Sit XDDDD",function(t)
+    game.Players.LocalPlayer.Character.Humanoid.Sit = t
+end)
+
+--// Data Section \\--
+se:Label("We found save in your exploit Workspace.")
+se:Label("Do you want to load it?")
+se:Label("Walkspeed:"..(Settings.Speed).."")
+se:Label("JumpPower:"..(Settings.JumpPowerV).."")
+
+se:Button("Load",function()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Settings.Speed
+    wait (0,5)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = Settings.JumpPowerV
+    wait (0,5)
+spawn(function()
+    Notification.Notify("Owner(358x3)", "Loaded Gui Data", "rbxassetid://4914902889");
+    end)
+end)
+
+--// Player Information Section \\--\
+local plrNamr = game:GetService("Players")["LocalPlayer"].Name
+local plrId = game:GetService("Players")["LocalPlayer"].UserId
+local plrAge = game:GetService("Players")["LocalPlayer"].AccountAge
+local PremiumUserek = game:GetService("Players")["LocalPlayer"].MembershipType
+local PremiumekValue = "No"
+
+if PremiumUserek == Enum.MembershipType.Premium then
+    PremiumekValue = "Yes"
+else
+    PremiumekValue = "No"
+end
+
+local LocalizationService = game:GetService("LocalizationService")
+local player = game.Players.LocalPlayer
+ 
+local result, code = pcall(function()
+	return LocalizationService:GetCountryRegionForPlayerAsync(player)
+end)
+
+local function getexploit()
+    local exploit =
+        (syn and not is_sirhurt_closure and not pebc_execute and "Synapse") or
+        (secure_load and "Sentinel") or
+        (is_sirhurt_closure and "Sirhurt") or
+        (pebc_execute and "ProtoSmasher") or
+        (KRNL_LOADED and "Krnl") or
+        (WrapGlobal and "WeAreDevs") or
+        (isvm and "Proxo") or
+        (shadow_env and "Shadow") or
+        (jit and "EasyExploits") or
+        (getreg()['CalamariLuaEnv'] and "Calamari") or
+        (unit and "‎") or
+        (IS_VIVA_LOADED and "VIVA") or
+        (IS_COCO_LOADED and "Coco") or
+        ("Undetectable")
+ 
+    return exploit
+ end
+
+sf:Label("Your Roblox username:"..(plrNamr).."")
+sf:Label("Your Roblox Id:"..(plrId).."")
+sf:Label("Your Walkspeed:"..(Settings.Speed).."")
+sf:Label("Your JumpPower"..(Settings.JumpPowerV).."")
+sf:Label("Your Account Age is:"..(plrAge).."")
+sf:Label("Premium User:"..(PremiumekValue).."")
+sf:Label("Your Roblox Location:"..(code).."")
+sf:Label("Your Exploit:"..(getexploit()).."")
+
+--// Tip/Tricks Section \\--
+
+sd:Label("Right Ctrl close Gui!")
+sd:Label("Sometime speed load can bug. You need to:")
+sd:Label("goto local player and change it")
+sd:Label("Inf jump no save bc i'm too lazy")
+
+--// Admin Commands \\--
+
+sg:Button("Infinite Yield",function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+end)
+
+--// Function Section \\--
+function InfJumperDDD()
+    InfiniteJumpEnabled = Settings.InfJumper
+    game:GetService("UserInputService").JumpRequest:connect(function()
+        if InfiniteJumpEnabled then
+            game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+        end
+    end)
+end
